@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adarsh Precast - All-in-One Platform</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-light: #f4f7f6; --surface-light: #ffffff; --primary-light: #1a53ff; --secondary-light: #ff7d00; --text-light: #121212; --subtext-light: #5f5f5f; --border-light: #e0e0e0;
+            --bg-dark: #121212; --surface-dark: #1e1e1e; --primary-dark: #4cc9f0; --secondary-dark: #f7b801; --text-dark: #f0f0f0; --subtext-dark: #a0a0a0; --border-dark: #3a3a3a;
+        }
+        body { font-family: 'Roboto Condensed', sans-serif; background-color: var(--bg-light); color: var(--text-light); background-image: url('https://www.transparenttextures.com/patterns/concrete-wall-2.png'); transition: background-color 0.5s, color 0.5s; }
+        .dark body { background-color: var(--bg-dark); color: var(--text-dark); background-image: url('https://www.transparenttextures.com/patterns/dark-concrete.png'); }
+        .custom-cursor { position: fixed; width: 30px; height: 30px; border: 2px solid var(--primary-light); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: all 0.1s ease; z-index: 9999; }
+        .dark .custom-cursor { border-color: var(--primary-dark); }
+        .custom-cursor.hovered { width: 50px; height: 50px; background-color: rgba(26, 83, 255, 0.2); }
+        .dark .custom-cursor.hovered { background-color: rgba(76, 201, 240, 0.2); }
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Teko', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .surface-card { background-color: var(--surface-light); border: 1px solid var(--border-light); transition: background-color 0.5s, border-color 0.5s, box-shadow 0.3s, transform 0.3s; }
+        .dark .surface-card { background-color: var(--surface-dark); border: 1px solid var(--border-dark); }
+        .surface-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .dark .surface-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        .btn-primary { background-color: var(--primary-light); color: white; transition: background-color 0.3s, transform 0.2s; }
+        .dark .btn-primary { background-color: var(--primary-dark); color: #121212; }
+        .btn-primary:hover { transform: scale(1.05); }
+        .btn-secondary { background-color: var(--secondary-light); color: white; transition: background-color 0.3s, transform 0.2s; }
+        .dark .btn-secondary { background-color: var(--secondary-dark); color: #121212; }
+        .btn-secondary:hover { transform: scale(1.05); }
+        .btn-danger { background-color: #dc3545; color: white; transition: background-color 0.3s, transform 0.2s; }
+        .btn-danger:hover { transform: scale(1.05); }
+        .admin-input, .auth-input { background-color: #f0f0f0; border: 1px solid var(--border-light); color: var(--text-light); }
+        .dark .admin-input, .dark .auth-input { background-color: #2a2a2a; border-color: var(--border-dark); color: var(--text-dark); }
+        .status-pending { background-color: #ffc107; color: #333; }
+        .status-in-progress { background-color: #17a2b8; color: white; }
+        .status-completed { background-color: #28a745; color: white; }
+        .status-cancelled { background-color: #dc3545; color: white; }
+        .link-primary { color: var(--primary-light); cursor: pointer; text-decoration: underline; }
+        .dark .link-primary { color: var(--primary-dark); }
+        .link-primary:hover { opacity: 0.8; }
+        .auth-container { min-height: 100vh; background: linear-gradient(135deg, var(--primary-light), var(--secondary-light)); }
+        .dark .auth-container { background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark)); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor hidden md:block"></div>
+
+    <!-- Authentication Container -->
+    <div id="auth-container" class="auth-container flex items-center justify-center px-4">
+        <div class="w-full max-w-md">
+            <!-- Login Selection -->
+            <div id="login-selection" class="surface-card p-8 rounded-lg shadow-2xl text-center">
+                <i class="fas fa-building text-6xl text-[var(--primary-light)] dark:text-[var(--primary-dark)] mb-4"></i>
+                <h2 class="font-heading text-4xl mb-6 text-[var(--text-light)] dark:text-[var(--text-dark)]">Welcome to Adarsh Precast</h2>
+                <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-8">Choose your login type to continue</p>
+                
+                <div class="space-y-4">
+                    <button id="user-login-btn" class="w-full btn-primary font-bold py-3 px-6 rounded-lg text-lg font-heading">
+                        <i class="fas fa-user mr-2"></i> Customer Login
+                    </button>
+                    <button id="admin-login-btn" class="w-full btn-secondary font-bold py-3 px-6 rounded-lg text-lg font-heading">
+                        <i class="fas fa-user-shield mr-2"></i> Admin Login
+                    </button>
+                </div>
+            </div>
+
+            <!-- User Login Card -->
+            <div id="user-login-card" class="surface-card p-8 rounded-lg shadow-2xl hidden">
+                <div class="text-center mb-6">
+                    <i class="fas fa-user text-5xl text-[var(--primary-light)] dark:text-[var(--primary-dark)] mb-2"></i>
+                    <h2 class="font-heading text-3xl text-[var(--text-light)] dark:text-[var(--text-dark)]">Customer Login</h2>
+                </div>
+                <form id="user-login-form" class="space-y-4">
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Email</label>
+                        <input type="email" id="user-login-email" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Password</label>
+                        <input type="password" id="user-login-password" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <button type="submit" class="w-full btn-primary font-bold py-3 rounded-lg text-lg">Login</button>
+                </form>
+                <p class="text-center mt-4 text-[var(--text-light)] dark:text-[var(--text-dark)]">
+                    Don't have an account? 
+                    <span id="show-user-signup" class="link-primary font-bold">Sign Up</span>
+                </p>
+                <p class="text-center mt-2">
+                    <span id="back-to-selection-1" class="link-primary font-bold">← Back to Selection</span>
+                </p>
+            </div>
+
+            <!-- User Signup Card -->
+            <div id="user-signup-card" class="surface-card p-8 rounded-lg shadow-2xl hidden">
+                <div class="text-center mb-6">
+                    <i class="fas fa-user-plus text-5xl text-[var(--primary-light)] dark:text-[var(--primary-dark)] mb-2"></i>
+                    <h2 class="font-heading text-3xl text-[var(--text-light)] dark:text-[var(--text-dark)]">Create Customer Account</h2>
+                </div>
+                <form id="user-signup-form" class="space-y-4">
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Full Name</label>
+                        <input type="text" id="user-signup-name" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Email</label>
+                        <input type="email" id="user-signup-email" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Password (min. 6 characters)</label>
+                        <input type="password" id="user-signup-password" class="w-full p-3 rounded auth-input" minlength="6" required>
+                    </div>
+                    <button type="submit" class="w-full btn-primary font-bold py-3 rounded-lg text-lg">Create Account</button>
+                </form>
+                <p class="text-center mt-4 text-[var(--text-light)] dark:text-[var(--text-dark)]">
+                    Already have an account? 
+                    <span id="show-user-login" class="link-primary font-bold">Login</span>
+                </p>
+                <p class="text-center mt-2">
+                    <span id="back-to-selection-2" class="link-primary font-bold">← Back to Selection</span>
+                </p>
+            </div>
+
+            <!-- Admin Login Card -->
+            <div id="admin-login-card" class="surface-card p-8 rounded-lg shadow-2xl hidden">
+                <div class="text-center mb-6">
+                    <i class="fas fa-user-shield text-5xl text-[var(--secondary-light)] dark:text-[var(--secondary-dark)] mb-2"></i>
+                    <h2 class="font-heading text-3xl text-[var(--text-light)] dark:text-[var(--text-dark)]">Admin Login</h2>
+                    <p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mt-2">Authorized Personnel Only</p>
+                </div>
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Admin Email</label>
+                        <input type="email" id="admin-login-email" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-2 text-[var(--text-light)] dark:text-[var(--text-dark)]">Admin Password</label>
+                        <input type="password" id="admin-login-password" class="w-full p-3 rounded auth-input" required>
+                    </div>
+                    <button type="submit" class="w-full btn-secondary font-bold py-3 rounded-lg text-lg">Admin Login</button>
+                </form>
+                <p class="text-center mt-4">
+                    <span id="back-to-selection-3" class="link-primary font-bold">← Back to Selection</span>
+                </p>
+            </div>
+
+            <!-- Error/Success Messages -->
+            <div id="auth-message" class="mt-4 p-3 rounded-lg text-center font-bold hidden"></div>
+        </div>
+    </div>
+
+    <!-- Main Application Container (Initially hidden) -->
+    <div id="app-container" class="hidden">
+        <header class="bg-[var(--surface-light)] dark:bg-[var(--surface-dark)] shadow-lg sticky top-0 z-40 transition-colors duration-500">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="#" data-page="home" class="nav-link text-4xl font-bold text-[var(--primary-light)] dark:text-[var(--primary-dark)] font-heading">Adarsh Precast</a>
+                
+                <div class="hidden md:flex items-center space-x-6 font-heading text-lg">
+                    <a href="#" data-page="home" class="nav-link text-[var(--text-light)] dark:text-[var(--text-dark)] hover:text-[var(--primary-light)] dark:hover:text-[var(--primary-dark)]">Home</a>
+                    <a href="#" data-page="orders" class="nav-link text-[var(--text-light)] dark:text-[var(--text-dark)] hover:text-[var(--primary-light)] dark:hover:text-[var(--primary-dark)]">My Orders</a>
+                    <a href="#" data-page="admin" id="admin-nav-link" class="nav-link hidden text-[var(--text-light)] dark:text-[var(--text-dark)] hover:text-[var(--primary-light)] dark:hover:text-[var(--primary-dark)]">Admin</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="text-2xl text-[var(--text-light)] dark:text-[var(--text-dark)]"><i class="fas fa-moon"></i></button>
+                    <button id="user-profile-btn" class="text-2xl text-[var(--text-light)] dark:text-[var(--text-dark)]"><i class="fas fa-user-circle"></i></button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Page Containers -->
+        <div id="page-container">
+            <!-- Homepage -->
+            <main id="page-home" class="page container mx-auto px-6 py-12">
+                <section class="text-center mb-20 fade-in">
+                    <h1 class="text-6xl md:text-8xl font-bold mb-4 text-[var(--text-light)] dark:text-[var(--text-dark)]">Build Strong, Build with Adarsh</h1>
+                    <p class="text-xl text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] max-w-3xl mx-auto mb-8">The most trusted name in precast concrete solutions in Siwan, Bihar. Explore our products and bring your vision to life.</p>
+                    <a href="#products" class="btn-primary font-bold py-3 px-10 rounded-full text-xl font-heading">Explore Products</a>
+                </section>
+                <section id="products" class="mb-20">
+                    <h2 class="text-5xl font-bold text-center mb-12 slide-in">Our Products</h2>
+                    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </section>
+                <section id="ideas" class="mb-20">
+                    <h2 class="text-5xl font-bold text-center mb-12 slide-in">Project Ideas</h2>
+                    <div id="ideas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                </section>
+            </main>
+
+            <!-- Orders Page -->
+            <main id="page-orders" class="page container mx-auto px-6 py-12 hidden">
+                <h1 class="text-6xl font-bold text-center mb-12">My Quote Requests</h1>
+                <div id="orders-container" class="max-w-5xl mx-auto space-y-6"></div>
+            </main>
+
+            <!-- Admin Page -->
+            <main id="page-admin" class="page container mx-auto px-6 py-12 hidden">
+                 <h1 class="text-6xl font-bold text-center mb-12">Admin Control Panel</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-2">
+                        <h2 class="text-4xl font-bold mb-6">Manage Quote Requests</h2>
+                        <div id="admin-orders-container" class="space-y-4"></div>
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold mb-6">Manage Products</h2>
+                        <div class="surface-card p-6 rounded-lg shadow-md mb-8">
+                            <h3 id="product-form-title" class="text-2xl font-heading mb-4">Add New Product</h3>
+                            <form id="product-form" class="space-y-4">
+                                <input type="hidden" id="product-id">
+                                <div><label class="font-bold">Product Name</label><input type="text" id="product-name" class="w-full p-2 rounded admin-input" required></div>
+                                <div><label class="font-bold">Description</label><input type="text" id="product-desc" class="w-full p-2 rounded admin-input" required></div>
+                                <div><label class="font-bold">Image URL</label><input type="url" id="product-image" class="w-full p-2 rounded admin-input" required></div>
+                                <div><label class="font-bold">Specifications</label><textarea id="product-specs" class="w-full p-2 rounded admin-input" rows="2" required></textarea></div>
+                                <div class="flex gap-4">
+                                    <button type="submit" id="product-submit-btn" class="w-full btn-primary font-bold py-2 rounded">Add Product</button>
+                                    <button type="button" id="product-cancel-btn" class="w-full bg-gray-500 text-white font-bold py-2 rounded hidden">Cancel Edit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <h3 class="text-2xl font-heading mb-4">Existing Products</h3>
+                        <div id="admin-products-container" class="space-y-2"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="item-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="surface-card rounded-lg shadow-xl w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="p-6 md:p-8 relative">
+                <button id="modal-close-btn" class="absolute top-4 right-4 text-2xl text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] hover:text-red-500"><i class="fas fa-times-circle"></i></button>
+                <div id="modal-content-container"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="user-profile-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="surface-card rounded-lg shadow-xl w-11/12 max-w-md p-8 text-center transform scale-95 transition-transform duration-300">
+             <i class="fas fa-user-circle text-6xl text-[var(--primary-light)] dark:text-[var(--primary-dark)] mb-4"></i>
+             <h3 class="text-3xl font-heading mb-2">User Profile</h3>
+             <p id="user-email-display" class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-4"></p>
+             <p id="user-role-display" class="text-sm font-bold mb-4"></p>
+             <div class="space-y-2">
+                 <button id="logout-btn" class="w-full btn-danger font-bold py-2 px-6 rounded-full font-heading">Logout</button>
+                 <button id="user-modal-close-btn" class="w-full bg-gray-500 text-white font-bold py-2 px-6 rounded-full font-heading">Close</button>
+             </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Global variables
+        let auth = null;
+        let currentUser = null;
+        let isAdmin = false;
+        
+        // Admin email configuration
+        const ADMIN_EMAIL = "admin@adarshprecast.com";
+        
+        // Initialize Firebase
+        await initializeFirebase();
+        
+        async function initializeFirebase() {
+            try {
+                // Import Firebase modules
+                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+                const { 
+                    getAuth, 
+                    createUserWithEmailAndPassword, 
+                    signInWithEmailAndPassword, 
+                    onAuthStateChanged,
+                    signOut,
+                    updateProfile
+                } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+
+                // Firebase Configuration - Replace with your config
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBDxjdBrNhP35vklpWF8Xer5caBybBH7jw",
+                    authDomain: "adarshprecast-293ac.firebaseapp.com",
+                    projectId: "adarshprecast-293ac",
+                    storageBucket: "adarshprecast-293ac.firebasestorage.app",
+                    messagingSenderId: "589815873421",
+                    appId: "1:589815873421:web:7e567ab61182df703047c4",
+                    measurementId: "G-PTTHJG1HF0"
+                };
+
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+
+                console.log('Firebase initialized successfully');
+                setupAuthenticationFlow(createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile);
+                
+            } catch (error) {
+                console.error('Firebase initialization failed:', error);
+                showMessage('Failed to initialize authentication system', 'error');
+            }
+        }
+
+        function setupAuthenticationFlow(createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile) {
+            // Auth state observer
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    isAdmin = user.email === ADMIN_EMAIL;
+                    showMainApp();
+                } else {
+                    currentUser = null;
+                    isAdmin = false;
+                    showAuthScreen();
+                }
+            });
+
+            setupAuthUI(createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile);
+        }
+
+        function setupAuthUI(createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile) {
+            // Get auth elements
+            const loginSelection = document.getElementById('login-selection');
+            const userLoginCard = document.getElementById('user-login-card');
+            const userSignupCard = document.getElementById('user-signup-card');
+            const adminLoginCard = document.getElementById('admin-login-card');
+            
+            // Navigation buttons
+            document.getElementById('user-login-btn').addEventListener('click', () => showCard('user-login'));
+            document.getElementById('admin-login-btn').addEventListener('click', () => showCard('admin-login'));
+            
+            // Back to selection buttons
+            document.getElementById('back-to-selection-1').addEventListener('click', () => showCard('selection'));
+            document.getElementById('back-to-selection-2').addEventListener('click', () => showCard('selection'));
+            document.getElementById('back-to-selection-3').addEventListener('click', () => showCard('selection'));
+            
+            // Toggle between login and signup
+            document.getElementById('show-user-signup').addEventListener('click', () => showCard('user-signup'));
+            document.getElementById('show-user-login').addEventListener('click', () => showCard('user-login'));
+
+            function showCard(cardType) {
+                // Hide all cards
+                [loginSelection, userLoginCard, userSignupCard, adminLoginCard].forEach(card => {
+                    card.classList.add('hidden');
+                });
+                
+                // Show selected card
+                switch(cardType) {
+                    case 'selection':
+                        loginSelection.classList.remove('hidden');
+                        break;
+                    case 'user-login':
+                        userLoginCard.classList.remove('hidden');
+                        break;
+                    case 'user-signup':
+                        userSignupCard.classList.remove('hidden');
+                        break;
+                    case 'admin-login':
+                        adminLoginCard.classList.remove('hidden');
+                        break;
+                }
+                clearMessage();
+            }
+
+            // User Signup
+            document.getElementById('user-signup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('user-signup-name').value.trim();
+                const email = document.getElementById('user-signup-email').value.trim();
+                const password = document.getElementById('user-signup-password').value;
+
+                if (password.length < 6) {
+                    showMessage('Password must be at least 6 characters long', 'error');
+                    return;
+                }
+
+                try {
+                    showMessage('Creating account...', 'loading');
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    
+                    // Update profile with name
+                    await updateProfile(userCredential.user, {
+                        displayName: name
+                    });
+                    
+                    showMessage('Account created successfully!', 'success');
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    showMessage(getFirebaseErrorMessage(error), 'error');
+                }
+            });
+
+            // User Login
+            document.getElementById('user-login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('user-login-email').value.trim();
+                const password = document.getElementById('user-login-password').value;
+
+                if (email === ADMIN_EMAIL) {
+                    showMessage('Please use Admin Login for admin access', 'error');
+                    return;
+                }
+
+                try {
+                    showMessage('Signing in...', 'loading');
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showMessage('Login successful!', 'success');
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showMessage(getFirebaseErrorMessage(error), 'error');
+                }
+            });
+
+            // Admin Login
+            document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('admin-login-email').value.trim();
+                const password = document.getElementById('admin-login-password').value;
+
+                if (email !== ADMIN_EMAIL) {
+                    showMessage('Invalid admin credentials', 'error');
+                    return;
+                }
+
+                try {
+                    showMessage('Verifying admin credentials...', 'loading');
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showMessage('Admin login successful!', 'success');
+                } catch (error) {
+                    console.error('Admin login error:', error);
+                    showMessage('Invalid admin credentials', 'error');
+                }
+            });
+
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    showMessage('Logged out successfully', 'success');
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showMessage('Error logging out', 'error');
+                }
+            });
+        }
+
+        function showAuthScreen() {
+            document.getElementById('auth-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+        }
+
+        function showMainApp() {
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            initializeMainApp();
+        }
+
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('auth-message');
+            messageEl.textContent = message;
+            messageEl.className = 'mt-4 p-3 rounded-lg text-center font-bold';
+            
+            if (type === 'error') {
+                messageEl.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
+            } else if (type === 'success') {
+                messageEl.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-300');
+            } else if (type === 'loading') {
+                messageEl.classList.add('bg-blue-100', 'text-blue-700', 'border', 'border-blue-300');
+            }
+            
+            messageEl.classList.remove('hidden');
+            
+            if (type === 'success' || type === 'loading') {
+                setTimeout(() => {
+                    messageEl.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function clearMessage() {
+            document.getElementById('auth-message').classList.add('hidden');
+        }
+
+        function getFirebaseErrorMessage(error) {
+            switch (error.code) {
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                    return 'Invalid email or password';
+                case 'auth/email-already-in-use':
+                    return 'Email already registered. Please login instead.';
+                case 'auth/weak-password':
+                    return 'Password is too weak. Please choose a stronger password.';
+                case 'auth/invalid-email':
+                    return 'Please enter a valid email address';
+                case 'auth/too-many-requests':
+                    return 'Too many failed attempts. Please try again later.';
+                default:
+                    return error.message || 'An error occurred. Please try again.';
+            }
+        }
+
+        function initializeMainApp() {
+            // Show/hide admin navigation
+            const adminNavLink = document.getElementById('admin-nav-link');
+            if (isAdmin) {
+                adminNavLink.classList.remove('hidden');
+            } else {
+                adminNavLink.classList.add('hidden');
+            }
+
+            // Update user profile modal
+            document.getElementById('user-email-display').textContent = currentUser.email;
+            document.getElementById('user-role-display').textContent = isAdmin ? 'Administrator' : 'Customer';
+            document.getElementById('user-role-display').className = isAdmin 
+                ? 'text-sm font-bold mb-4 text-orange-600' 
+                : 'text-sm font-bold mb-4 text-blue-600';
+
+            // Initialize app functionality
+            setupMainAppUI();
+            renderHomepage();
+            renderCustomerOrders();
+            if (isAdmin) {
+                renderAdminPage();
+            }
+        }
+
+        // ===================================================================
+        // DATA STORE & MANAGEMENT
+        // ===================================================================
+        function getProducts() {
+            const defaultProducts = [
+                { id: 1, name: "Precast Boundary Wall", description: "Durable and quick-to-install boundary walls.", imageUrl: 'https://5.imimg.com/data5/ANDROID/Default/2022/12/GQ/XF/CN/49693969/product-jpeg-500x500.jpg', specs: "Height: 6-10ft; Thickness: 50mm" },
+                { id: 2, name: "Concrete Paver Blocks", description: "High-strength interlocking paver blocks.", imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/8/337140881/XF/PF/YF/194364405/interlocking-paver-block-500x500.jpeg', specs: "Shape: Zig-Zag, I-Shape; Strength: M30, M40" },
+                { id: 3, name: "Solid Concrete Blocks", description: "Reliable and uniform solid blocks.", imageUrl: 'https://5.imimg.com/data5/ANDROID/Default/2023/1/KM/BY/KX/13247348/product-jpeg-500x500.jpg', specs: "Size: 400x200x200 mm; Strength: 7.5 N/mm²" },
+                { id: 4, name: "RCC Door Frames", description: "Termite-proof and weather-resistant frames.", imageUrl: 'https://tiimg.tistatic.com/fp/1/007/584/rcc-precast-concrete-door-frames-889.jpg', specs: "Section: 4x2.5in, 5x2.5in; Finish: Smooth Grey" }
+            ];
+            const storedProducts = localStorage.getItem('adarshProducts');
+            if (!storedProducts) {
+                localStorage.setItem('adarshProducts', JSON.stringify(defaultProducts));
+                return defaultProducts;
+            }
+            return JSON.parse(storedProducts);
+        }
+        let productsData = getProducts();
+
+        const ideasData = [
+            { id: 101, name: "Modern Garden Pathway", description: "Create a stunning garden path using our versatile Concrete Paver Blocks.", imageUrl: 'https://i.pinimg.com/736x/a2/a3/83/a2a383a45d2330b773d1f13a04975765.jpg', products: [2] },
+            { id: 102, name: "Secure Compound Area", description: "Quickly secure your property with our robust Precast Boundary Walls.", imageUrl: 'https://www.precastwalls.co.in/images/precast-compound-wall.jpg', products: [1] },
+            { id: 103, name: "Elegant Villa Construction", description: "Use our Solid Concrete Blocks and RCC Door Frames for a durable and premium finish.", imageUrl: 'https://i.ytimg.com/vi/q5dc-yT321Q/maxresdefault.jpg', products: [3, 4] }
+        ];
+
+        function setupMainAppUI() {
+            // ===================================================================
+            // SINGLE PAGE APP (SPA) NAVIGATION
+            // ===================================================================
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            function showPage(pageId) {
+                // Admin access check
+                if (pageId === 'page-admin' && !isAdmin) {
+                    alert("Access Denied. You must be an admin to view this page.");
+                    return;
+                }
+                
+                pages.forEach(page => {
+                    page.classList.add('hidden');
+                });
+                document.getElementById(pageId).classList.remove('hidden');
+                window.scrollTo(0, 0);
+                
+                // Re-render content when switching pages
+                if (pageId === 'page-home') renderHomepage();
+                if (pageId === 'page-orders') renderCustomerOrders();
+                if (pageId === 'page-admin' && isAdmin) renderAdminPage();
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = `page-${e.currentTarget.dataset.page}`;
+                    showPage(pageId);
+                });
+            });
+
+            // ===================================================================
+            // UI & INTERACTION SETUP
+            // ===================================================================
+            const themeToggle = document.getElementById('theme-toggle');
+            const userProfileBtn = document.getElementById('user-profile-btn');
+            const userProfileModal = document.getElementById('user-profile-modal');
+            const userModalCloseBtn = document.getElementById('user-modal-close-btn');
+            const cursor = document.querySelector('.custom-cursor');
+
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+            
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            if (cursor) {
+                document.addEventListener('mousemove', e => {
+                    cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px;`);
+                });
+                document.querySelectorAll('a, button, input, select').forEach(el => {
+                    el.addEventListener('mouseover', () => cursor.classList.add('hovered'));
+                    el.addEventListener('mouseout', () => cursor.classList.remove('hovered'));
+                });
+            }
+
+            userProfileBtn.addEventListener('click', () => userProfileModal.classList.remove('opacity-0', 'pointer-events-none'));
+            userModalCloseBtn.addEventListener('click', () => userProfileModal.classList.add('opacity-0', 'pointer-events-none'));
+
+            // Start with home page
+            showPage('page-home');
+        }
+
+        // ===================================================================
+        // DYNAMIC CONTENT RENDERING
+        // ===================================================================
+        function renderHomepage() {
+            const productsGrid = document.getElementById('products-grid');
+            const ideasGrid = document.getElementById('ideas-grid');
+            productsGrid.innerHTML = '';
+            ideasGrid.innerHTML = '';
+
+            productsData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'surface-card rounded-lg overflow-hidden cursor-pointer fade-in';
+                card.style.animationDelay = `${index * 100}ms`;
+                card.innerHTML = `
+                    <img class="w-full h-56 object-cover" src="${item.imageUrl}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e9ecef/6c757d?text=Image';">
+                    <div class="p-6">
+                        <h3 class="font-heading text-2xl mb-2">${item.name}</h3>
+                        <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-4">${item.description}</p>
+                        <button class="w-full btn-primary font-bold py-2 px-4 rounded-full font-heading" onclick="openModal(${item.id}, 'product')">View Details</button>
+                    </div>
+                `;
+                productsGrid.appendChild(card);
+            });
+            
+            ideasData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'surface-card rounded-lg overflow-hidden cursor-pointer fade-in';
+                card.style.animationDelay = `${index * 100}ms`;
+                card.innerHTML = `
+                    <img class="w-full h-56 object-cover" src="${item.imageUrl}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e9ecef/6c757d?text=Image';">
+                    <div class="p-6">
+                        <h3 class="font-heading text-2xl mb-2">${item.name}</h3>
+                        <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-4">${item.description}</p>
+                        <button class="w-full btn-primary font-bold py-2 px-4 rounded-full font-heading" onclick="openModal(${item.id}, 'idea')">View Idea</button>
+                    </div>
+                `;
+                ideasGrid.appendChild(card);
+            });
+        }
+
+        // ===================================================================
+        // MODAL FUNCTIONALITY
+        // ===================================================================
+        const modal = document.getElementById('item-modal');
+        const modalContent = document.getElementById('modal-content-container');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        window.openModal = function(itemId, type) {
+            const item = type === 'product' ? productsData.find(p => p.id === itemId) : ideasData.find(i => i.id === itemId);
+            let contentHTML = '';
+
+            if (type === 'product') {
+                contentHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <img class="w-full h-80 object-cover rounded-lg mb-4" src="${item.imageUrl}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e9ecef/6c757d?text=Image';">
+                            <h2 class="font-heading text-4xl font-bold mb-2">${item.name}</h2>
+                            <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-4">${item.description}</p>
+                            <h4 class="font-heading text-2xl mb-2">Specifications:</h4>
+                            <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">${item.specs}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-3xl font-bold mb-4">Request a Quote</h3>
+                            <form id="quote-form" data-product-id="${item.id}">
+                                <div class="mb-4"><label class="block mb-1 font-medium">Full Name</label><input type="text" id="quote-name" class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600" value="${currentUser.displayName || ''}" required></div>
+                                <div class="mb-4"><label class="block mb-1 font-medium">Email</label><input type="email" id="quote-email" class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600" value="${currentUser.email}" readonly></div>
+                                <div class="mb-4"><label class="block mb-1 font-medium">Phone Number</label><input type="tel" id="quote-phone" class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600" required></div>
+                                <div class="mb-4"><label class="block mb-1 font-medium">Estimated Quantity</label><input type="number" id="quote-quantity" class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600" min="1" required></div>
+                                <div class="mb-4"><label class="block mb-1 font-medium">Additional Requirements (Optional)</label><textarea id="quote-requirements" class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600" rows="3" placeholder="Any specific requirements or notes..."></textarea></div>
+                                <button type="submit" class="w-full btn-secondary font-bold py-3 px-5 rounded-full text-lg font-heading">Submit Quote Request</button>
+                            </form>
+                        </div>
+                    </div>`;
+            } else { // type === 'idea'
+                const relatedProducts = item.products.map(pId => productsData.find(p => p.id === pId));
+                contentHTML = `
+                    <img class="w-full h-80 object-cover rounded-lg mb-4" src="${item.imageUrl}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e9ecef/6c757d?text=Image';">
+                    <h2 class="font-heading text-4xl font-bold mb-2">${item.name}</h2>
+                    <p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-6">${item.description}</p>
+                    <h3 class="font-heading text-3xl mb-4">Products for this Idea</h3>
+                    <div class="space-y-4">
+                        ${relatedProducts.map(p => p ? `<div class="surface-card p-4 rounded-md flex items-center justify-between"><div><h4 class="font-heading text-xl">${p.name}</h4><p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">${p.description}</p></div><button class="btn-primary text-sm font-bold py-1 px-3 rounded-full font-heading" onclick="openModal(${p.id}, 'product')">View</button></div>` : '').join('')}
+                    </div>`;
+            }
+            
+            modalContent.innerHTML = contentHTML;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-95');
+
+            if (type === 'product') {
+                document.getElementById('quote-form').addEventListener('submit', handleQuoteSubmit);
+            }
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.add('scale-95');
+        }
+        modalCloseBtn.addEventListener('click', closeModal);
+
+        function handleQuoteSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const productId = parseInt(form.dataset.productId);
+            const product = productsData.find(p => p.id === productId);
+            
+            const orders = JSON.parse(localStorage.getItem('adarshOrders')) || [];
+            const newOrder = {
+                id: `ORD-${Date.now()}`,
+                productName: product.name,
+                productId: product.id,
+                quantity: form.querySelector('#quote-quantity').value,
+                customerName: form.querySelector('#quote-name').value,
+                customerEmail: form.querySelector('#quote-email').value,
+                customerPhone: form.querySelector('#quote-phone').value,
+                requirements: form.querySelector('#quote-requirements').value || 'None',
+                status: 'Pending',
+                date: new Date().toLocaleDateString(),
+                userId: currentUser.uid
+            };
+            
+            orders.push(newOrder);
+            localStorage.setItem('adarshOrders', JSON.stringify(orders));
+            alert(`Quote request for ${newOrder.productName} submitted successfully! You can view its status on the 'My Orders' page.`);
+            closeModal();
+            
+            // Refresh orders if currently on orders page
+            if (!document.getElementById('page-orders').classList.contains('hidden')) {
+                renderCustomerOrders();
+            }
+        }
+        
+        // ===================================================================
+        // ORDERS PAGE LOGIC
+        // ===================================================================
+        function renderCustomerOrders() {
+            const ordersContainer = document.getElementById('orders-container');
+            const allOrders = JSON.parse(localStorage.getItem('adarshOrders')) || [];
+            
+            // Filter orders for current user (admin sees all, users see only their orders)
+            const userOrders = isAdmin ? allOrders : allOrders.filter(order => order.userId === currentUser.uid);
+
+            if (userOrders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-clipboard-list text-6xl text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-4"></i>
+                        <p class="text-xl text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">
+                            ${isAdmin ? 'No quote requests received yet.' : 'You have not requested any quotes yet.'}
+                        </p>
+                        ${!isAdmin ? '<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mt-2">Explore our products and request quotes to get started!</p>' : ''}
+                    </div>`;
+                return;
+            }
+            
+            ordersContainer.innerHTML = userOrders.map(order => {
+                const statusClass = `status-${order.status.toLowerCase().replace(' ', '-')}`;
+                return `
+                    <div class="surface-card rounded-lg p-6 shadow-md">
+                        <div class="flex flex-col lg:flex-row justify-between items-start gap-4">
+                            <div class="flex-1">
+                                <h3 class="font-heading text-2xl mb-2">${order.productName}</h3>
+                                <p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-1">Order ID: ${order.id}</p>
+                                <p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-1">Customer: ${order.customerName}</p>
+                                ${isAdmin ? `<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-1">Email: ${order.customerEmail}</p>` : ''}
+                                ${order.customerPhone ? `<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)] mb-1">Phone: ${order.customerPhone}</p>` : ''}
+                                ${order.requirements && order.requirements !== 'None' ? `<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">Requirements: ${order.requirements}</p>` : ''}
+                            </div>
+                            <div class="flex flex-col lg:flex-row items-center gap-6">
+                                <div class="text-center">
+                                    <p class="font-bold text-[var(--text-light)] dark:text-[var(--text-dark)]">Quantity</p>
+                                    <p class="text-2xl font-heading text-[var(--primary-light)] dark:text-[var(--primary-dark)]">${order.quantity}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="font-bold text-[var(--text-light)] dark:text-[var(--text-dark)]">Date</p>
+                                    <p class="text-lg">${order.date}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="font-bold text-[var(--text-light)] dark:text-[var(--text-dark)]">Status</p>
+                                    <span class="px-3 py-1 text-sm font-bold rounded-full ${statusClass}">${order.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        // ===================================================================
+        // ADMIN PAGE LOGIC
+        // ===================================================================
+        function renderAdminPage() {
+            if (!isAdmin) return;
+            
+            const adminOrdersContainer = document.getElementById('admin-orders-container');
+            const adminProductsContainer = document.getElementById('admin-products-container');
+            let orders = JSON.parse(localStorage.getItem('adarshOrders')) || [];
+
+            // Render Orders for Admin
+            adminOrdersContainer.innerHTML = '';
+            if (orders.length === 0) {
+                adminOrdersContainer.innerHTML = `<p class="text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">No quote requests received yet.</p>`;
+            } else {
+                orders.forEach(order => {
+                    const orderCard = document.createElement('div');
+                    orderCard.className = 'surface-card p-4 rounded-lg shadow-sm';
+                    orderCard.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-lg">${order.productName}</h4>
+                                <p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">Customer: ${order.customerName} | Qty: ${order.quantity}</p>
+                                <p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">Email: ${order.customerEmail}</p>
+                                ${order.customerPhone ? `<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">Phone: ${order.customerPhone}</p>` : ''}
+                                ${order.requirements && order.requirements !== 'None' ? `<p class="text-sm text-[var(--subtext-light)] dark:text-[var(--subtext-dark)]">Requirements: ${order.requirements}</p>` : ''}
+                                <p class="text-xs text-gray-400">ID: ${order.id} | Date: ${order.date}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <select data-order-id="${order.id}" class="status-select admin-input p-1 rounded">
+                                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="In Progress" ${order.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                    <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>`;
+                    adminOrdersContainer.appendChild(orderCard);
+                });
+                
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        updateOrderStatus(e.target.dataset.orderId, e.target.value);
+                    });
+                });
+            }
+
+            // Render Products for Admin
+            adminProductsContainer.innerHTML = '';
+            productsData.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'surface-card p-2 rounded flex justify-between items-center';
+                productCard.innerHTML = `
+                    <p class="font-bold">${product.name}</p>
+                    <div class="flex gap-2">
+                        <button class="edit-btn text-blue-500 hover:text-blue-700" data-id="${product.id}" title="Edit Product">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-red-500 hover:text-red-700" data-id="${product.id}" title="Delete Product">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>`;
+                adminProductsContainer.appendChild(productCard);
+            });
+            
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => startEditProduct(e.currentTarget.dataset.id));
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => deleteProduct(e.currentTarget.dataset.id));
+            });
+
+            // Setup product form
+            setupProductForm();
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('adarshOrders')) || [];
+            orders = orders.map(order => order.id === orderId ? { ...order, status: newStatus } : order);
+            localStorage.setItem('adarshOrders', JSON.stringify(orders));
+            alert(`Order ${orderId} status updated to ${newStatus}.`);
+        }
+
+        function setupProductForm() {
+            const productForm = document.getElementById('product-form');
+            const productFormTitle = document.getElementById('product-form-title');
+            const productIdInput = document.getElementById('product-id');
+            const productNameInput = document.getElementById('product-name');
+            const productDescInput = document.getElementById('product-desc');
+            const productImageInput = document.getElementById('product-image');
+            const productSpecsInput = document.getElementById('product-specs');
+            const productSubmitBtn = document.getElementById('product-submit-btn');
+            const productCancelBtn = document.getElementById('product-cancel-btn');
+
+            function resetProductForm() {
+                productForm.reset();
+                productIdInput.value = '';
+                productFormTitle.textContent = 'Add New Product';
+                productSubmitBtn.textContent = 'Add Product';
+                productCancelBtn.classList.add('hidden');
+            }
+
+            productForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const id = productIdInput.value;
+                const productData = {
+                    name: productNameInput.value.trim(),
+                    description: productDescInput.value.trim(),
+                    imageUrl: productImageInput.value.trim(),
+                    specs: productSpecsInput.value.trim(),
+                };
+
+                if (id) {
+                    productsData = productsData.map(p => p.id === parseInt(id) ? { ...p, ...productData } : p);
+                    alert('Product updated successfully!');
+                } else {
+                    productData.id = Date.now();
+                    productsData.push(productData);
+                    alert('Product added successfully!');
+                }
+                
+                localStorage.setItem('adarshProducts', JSON.stringify(productsData));
+                renderAdminPage();
+                renderHomepage();
+                resetProductForm();
+            });
+            
+            productCancelBtn.addEventListener('click', resetProductForm);
+
+            window.startEditProduct = function(id) {
+                const product = productsData.find(p => p.id === parseInt(id));
+                productIdInput.value = product.id;
+                productNameInput.value = product.name;
+                productDescInput.value = product.description;
+                productImageInput.value = product.imageUrl;
+                productSpecsInput.value = product.specs;
+                productFormTitle.textContent = 'Edit Product';
+                productSubmitBtn.textContent = 'Update Product';
+                productCancelBtn.classList.remove('hidden');
+                document.getElementById('product-form-title').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            window.deleteProduct = function(id) {
+                if (confirm('Are you sure you want to delete this product?')) {
+                    productsData = productsData.filter(p => p.id !== parseInt(id));
+                    localStorage.setItem('adarshProducts', JSON.stringify(productsData));
+                    renderAdminPage();
+                    renderHomepage();
+                    alert('Product deleted successfully.');
+                }
+            }
+        }
+
+        // Initialize theme on page load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Setup cursor interaction
+        const cursor = document.querySelector('.custom-cursor');
+        if (cursor) {
+            document.addEventListener('mousemove', e => {
+                cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px;`);
+            });
+            
+            document.addEventListener('mouseenter', () => {
+                cursor.classList.remove('hidden');
+            });
+            
+            document.addEventListener('mouseleave', () => {
+                cursor.classList.add('hidden');
+            });
+            
+            // Add hover effects to interactive elements
+            const addHoverEffect = () => {
+                document.querySelectorAll('a, button, input, select, .surface-card').forEach(el => {
+                    el.addEventListener('mouseover', () => cursor.classList.add('hovered'));
+                    el.addEventListener('mouseout', () => cursor.classList.remove('hovered'));
+                });
+            };
+            
+            // Initial setup and re-setup after content changes
+            addHoverEffect();
+            
+            // Re-add hover effects after dynamic content is loaded
+            const observer = new MutationObserver(() => {
+                addHoverEffect();
+            });
+            
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+    });
+    </script>
+</body>
+</html>
